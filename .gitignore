@@ -1,0 +1,8 @@
+**/**/.DS_Store
+reports
+.DS_Store
+target
+bin
+*.i??
+*~
+.idea

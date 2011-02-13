@@ -1,0 +1,6 @@
+=Camel-DNS
+
+This is an additional component for Camel to run DNS queries, using DNSJava.
+
+The component should be a thin layer on top of DNSJava.
+

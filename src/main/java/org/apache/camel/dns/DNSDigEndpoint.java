@@ -79,7 +79,7 @@ public class DNSDigEndpoint extends DefaultEndpoint {
                 Record rec = Record.newRecord(name, type, dclass);
                 Message query = Message.newQuery(rec);
                 Message response = resolver.send(query);
-                exchange.getOut().setBody(String.valueOf(response));
+                exchange.getOut().setBody(response);
             }
         };
     }

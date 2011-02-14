@@ -56,7 +56,7 @@ public class DNSIPEndpoint extends DefaultEndpoint {
                             "Invalid or null domain :" + domain);
                 }
                 InetAddress address = Address.getByName((String) domain);
-                exchange.getOut().setBody(address.getHostAddress());
+                exchange.getOut().setBody(address);
             }
         };
     }

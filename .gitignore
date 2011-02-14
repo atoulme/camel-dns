@@ -6,3 +6,6 @@ bin
 *.i??
 *~
 .idea
+.settings
+.project
+.classpath

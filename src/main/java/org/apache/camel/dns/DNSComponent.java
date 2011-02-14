@@ -35,6 +35,21 @@ import org.apache.camel.impl.DefaultComponent;
  * </ul>
  * </p>
  * 
+ * <p>
+ * dns:///dig
+ * This endpoint takes a few parameters, most of them optional :
+ * <ul>
+ *   <li>dns.server: the server in particular for the query. If none is given,
+ *   the default one specified by the OS will be used.</li>
+ *   <li>dns.query: the query itself. Mandatory.</li>
+ *   <li>dns.type: the type of the lookup. Should match the values of 
+ *   {@see org.xbill.dns.Type}. Optional.</li>
+ *   <li>dns.class: the DNS class of the lookup. Should match the values of 
+ *   {@see org.xbill.dns.DClass}. Optional.</li>
+ * </ul>  
+ * 
+ * </p>
+ * 
  */
 public class DNSComponent extends DefaultComponent {
 
@@ -42,13 +57,17 @@ public class DNSComponent extends DefaultComponent {
 	
 	private static final String OPERATION_LOOKUP = "lookup";
 	
+	private static final String OPERATION_DIG = "dig";
+	
 	protected Endpoint createEndpoint(String uri, String remaining,
 			Map<String, Object> parameters) throws Exception {
 		if (OPERATION_IP.equals(remaining)) {
 			return new DNSIPEndpoint(getCamelContext());
 		} else if (OPERATION_LOOKUP.equals(remaining)) {
 			return new DNSLookupEndpoint(getCamelContext());
-		} else {
+		} else if (OPERATION_DIG.equals(remaining)) {
+			return new DNSDigEndpoint(getCamelContext());
+		}else {
 			throw new IllegalArgumentException(uri + 
 					"is unsupported by the DNS component");
 		}

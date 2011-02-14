@@ -79,13 +79,12 @@ public class DNSLookupEndpointTest extends CamelSpringTestSupport {
 		_resultEndpoint.expectedMessagesMatches(new Predicate() {
 			public boolean matches(Exchange exchange) {
 				Record[] record = (Record[]) exchange.getIn().getBody();
-				System.err.println(record[0]);
 				return record[0].getName().toString().equals("www.example.com.");
 			}
 		});
 		Map<String, Object> headers = new HashMap<String, Object>();
-		headers.put("dns.name", "monkey.wp.dg.cx");
-		headers.put("dns.type", "TXT");
+		headers.put("dns.name", "www.example.com");
+		headers.put("dns.type", "A");
 		_template.sendBodyAndHeaders("hello", headers);
 		_resultEndpoint.assertIsSatisfied();
 	}

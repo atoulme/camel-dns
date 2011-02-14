@@ -31,6 +31,8 @@ import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Section;
 
 /**
  * @author Antoine Toulme
@@ -40,6 +42,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class DNSDigEndpointTest extends CamelSpringTestSupport {
 
+    private static final String RESPONSE_MONKEY = "\"A monkey is a nonhuman " +
+    		"primate mammal with the exception usually of the lemurs and " +
+    		"tarsiers. More specifically, the term monkey refers to a subset " +
+    		"of monkeys: any of the smaller longer-tailed catarrhine or " +
+    		"platyrrhine primates as contrasted with the apes.\" " +
+    		"\" http://en.wikipedia.org/wiki/Monkey\"";
     protected AbstractApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("DNSDig.xml");
     }
@@ -55,8 +63,9 @@ public class DNSDigEndpointTest extends CamelSpringTestSupport {
         _resultEndpoint.expectedMessageCount(1);
         _resultEndpoint.expectedMessagesMatches(new Predicate() {
             public boolean matches(Exchange exchange) {
-                System.err.println(exchange.getIn().getBody());
-                throw new IllegalArgumentException("TODO make sure this works");
+                String str = ((Message) exchange.getIn().getBody()).
+                    getSectionArray(Section.ANSWER)[0].rdataToString();
+                return RESPONSE_MONKEY.equals(str);
             }
         });
         Map<String, Object> headers = new HashMap<String, Object>();

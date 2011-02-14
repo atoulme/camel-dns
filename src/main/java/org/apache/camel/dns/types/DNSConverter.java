@@ -25,8 +25,15 @@ import java.util.List;
 
 import org.apache.camel.Converter;
 import org.xbill.DNS.Address;
+import org.xbill.DNS.DClass;
+import org.xbill.DNS.ExtendedResolver;
 import org.xbill.DNS.Message;
+import org.xbill.DNS.Name;
 import org.xbill.DNS.Record;
+import org.xbill.DNS.Resolver;
+import org.xbill.DNS.ReverseMap;
+import org.xbill.DNS.Section;
+import org.xbill.DNS.Type;
 
 /**
  * @author Antoine Toulme

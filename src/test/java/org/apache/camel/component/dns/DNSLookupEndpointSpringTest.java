@@ -26,31 +26,28 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Predicate;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.xbill.DNS.Record;
 
 /**
  *         A set of test cases to make DNS lookups.
  * 
  */
-public class DNSLookupEndpointTest extends CamelTestSupport {
+public class DNSLookupEndpointSpringTest extends CamelSpringTestSupport {
+
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("DNSLookup.xml");
+    }
 
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint _resultEndpoint;
 
     @Produce(uri = "direct:start")
     protected ProducerTemplate _template;
-    
-    protected RouteBuilder createRouteBuilder() throws Exception {
-        RouteBuilder routeBuilder = super.createRouteBuilder();
-        
-        routeBuilder.from("direct:start").to("dns:lookup").to("mock:result");
-        
-        return routeBuilder;
-    }
 
     @Test
     public void testDNSWithNoHeaders() throws Exception {

@@ -26,49 +26,50 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Predicate;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Section;
 
 /**
- * A test case to check wikipedia records.
- *
+ *         Tests for the dig endpoint.
+ * 
  */
-public class WikipediaEndpointTest extends CamelTestSupport {
+public class DNSDigEndpointSpringTest extends CamelSpringTestSupport {
 
     private static final String RESPONSE_MONKEY = "\"A monkey is a nonhuman " +
-            "primate mammal with the exception usually of the lemurs and " +
-            "tarsiers. More specifically, the term monkey refers to a subset " +
-            "of monkeys: any of the smaller longer-tailed catarrhine or " +
-            "platyrrhine primates as contrasted with the apes.\" " +
-            "\" http://en.wikipedia.org/wiki/Monkey\"";
+    		"primate mammal with the exception usually of the lemurs and " +
+    		"tarsiers. More specifically, the term monkey refers to a subset " +
+    		"of monkeys: any of the smaller longer-tailed catarrhine or " +
+    		"platyrrhine primates as contrasted with the apes.\" " +
+    		"\" http://en.wikipedia.org/wiki/Monkey\"";
     
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("DNSDig.xml");
+    }
+
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint _resultEndpoint;
 
     @Produce(uri = "direct:start")
     protected ProducerTemplate _template;
-    
-    protected RouteBuilder createRouteBuilder() throws Exception {
-        RouteBuilder routeBuilder = super.createRouteBuilder();
-        
-        routeBuilder.from("direct:start").to("dns:wikipedia").to("mock:result");
-        
-        return routeBuilder;
-    }
 
     @Test
-    public void testWikipediaForMonkey() throws Exception {
+    public void testDigForMonkey() throws Exception {
         _resultEndpoint.expectedMessageCount(1);
         _resultEndpoint.expectedMessagesMatches(new Predicate() {
             public boolean matches(Exchange exchange) {
-                String str = (String) exchange.getIn().getBody();
+                String str = ((Message) exchange.getIn().getBody()).
+                    getSectionArray(Section.ANSWER)[0].rdataToString();
                 return RESPONSE_MONKEY.equals(str);
             }
         });
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put("term", "monkey");
+        headers.put("dns.name", "monkey.wp.dg.cx");
+        headers.put("dns.type", "TXT");
         _template.sendBodyAndHeaders(null, headers);
         _resultEndpoint.assertIsSatisfied();
     }

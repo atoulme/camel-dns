@@ -21,17 +21,22 @@ package org.apache.camel.component.dns;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
  *         A series of tests to check the IP lookup operation.
  * 
  */
-public class DNSIPEndpointTest extends CamelTestSupport {
+public class DNSIPEndpointSpringTest extends CamelSpringTestSupport {
+
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("IPCheck.xml");
+    }
 
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint _resultEndpoint;
@@ -39,14 +44,6 @@ public class DNSIPEndpointTest extends CamelTestSupport {
     @Produce(uri = "direct:start")
     protected ProducerTemplate _template;
 
-    protected RouteBuilder createRouteBuilder() throws Exception {
-        RouteBuilder routeBuilder = super.createRouteBuilder();
-        
-        routeBuilder.from("direct:start").to("dns:ip").to("mock:result");
-        
-        return routeBuilder;
-    }
-    
     @Test
     public void testNullIPRequests() throws Exception {
         _resultEndpoint.expectedMessageCount(0);

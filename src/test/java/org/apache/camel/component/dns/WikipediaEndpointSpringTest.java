@@ -26,16 +26,17 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Predicate;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * A test case to check wikipedia records.
  *
  */
-public class WikipediaEndpointTest extends CamelTestSupport {
+public class WikipediaEndpointSpringTest extends CamelSpringTestSupport {
 
     private static final String RESPONSE_MONKEY = "\"A monkey is a nonhuman " +
             "primate mammal with the exception usually of the lemurs and " +
@@ -44,19 +45,15 @@ public class WikipediaEndpointTest extends CamelTestSupport {
             "platyrrhine primates as contrasted with the apes.\" " +
             "\" http://en.wikipedia.org/wiki/Monkey\"";
     
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("Wikipedia.xml");
+    }
+
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint _resultEndpoint;
 
     @Produce(uri = "direct:start")
     protected ProducerTemplate _template;
-    
-    protected RouteBuilder createRouteBuilder() throws Exception {
-        RouteBuilder routeBuilder = super.createRouteBuilder();
-        
-        routeBuilder.from("direct:start").to("dns:wikipedia").to("mock:result");
-        
-        return routeBuilder;
-    }
 
     @Test
     public void testWikipediaForMonkey() throws Exception {

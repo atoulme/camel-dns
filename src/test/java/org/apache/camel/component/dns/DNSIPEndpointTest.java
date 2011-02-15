@@ -29,8 +29,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
- * @author Antoine Toulme
- * 
  *         A series of tests to check the IP lookup operation.
  * 
  */

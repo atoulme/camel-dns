@@ -35,8 +35,6 @@ import org.xbill.DNS.Message;
 import org.xbill.DNS.Section;
 
 /**
- * @author Antoine Toulme
- * 
  *         Tests for the dig endpoint.
  * 
  */

@@ -30,7 +30,6 @@ import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Type;
 
 /**
- * @author Antoine Toulme
  * 
  *         An endpoint to manage lookup operations, using the API from dnsjava.
  * 

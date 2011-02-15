@@ -34,8 +34,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.xbill.DNS.Record;
 
 /**
- * @author Antoine Toulme
- * 
  *         A set of test cases to make DNS lookups.
  * 
  */

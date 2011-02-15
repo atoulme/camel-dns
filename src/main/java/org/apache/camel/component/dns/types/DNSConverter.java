@@ -36,7 +36,6 @@ import org.xbill.DNS.Section;
 import org.xbill.DNS.Type;
 
 /**
- * @author Antoine Toulme
  * 
  * A converter for all the DNS objects used by the DNS component.
  *

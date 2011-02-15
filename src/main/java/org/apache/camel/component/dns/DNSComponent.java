@@ -24,7 +24,6 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultComponent;
 
 /**
- * @author Antoine Toulme
  * 
  *         The DNS components creates endpoints of the form: <br/>
  *         dns:///... <br/>

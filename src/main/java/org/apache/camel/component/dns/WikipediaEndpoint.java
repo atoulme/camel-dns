@@ -34,7 +34,6 @@ import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.Type;
 
 /**
- * @author Antoine Toulme
  * 
  * an endpoint to make queries against wikipedia using
  * the short TXT query.

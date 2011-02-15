@@ -33,8 +33,6 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author Antoine Toulme
- * 
  * A test case to check wikipedia records.
  *
  */

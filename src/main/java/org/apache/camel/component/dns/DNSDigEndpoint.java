@@ -33,8 +33,6 @@ import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.Type;
 
 /**
- * @author Antoine Toulme
- * 
  *         An endpoint for dig-like operations over DNS adresses.
  * 
  *         Inspired from Dig.java coming with the distribution of dnsjava,

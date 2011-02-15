@@ -30,7 +30,6 @@ import org.apache.camel.impl.DefaultProducer;
 import org.xbill.DNS.Address;
 
 /**
- * @author Antoine Toulme
  * 
  *         An endpoint to conduct IP address lookup from the host name.
  * 

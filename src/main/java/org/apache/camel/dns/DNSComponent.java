@@ -60,6 +60,14 @@ import org.apache.camel.impl.DefaultComponent;
  *         </ul>
  * 
  *         </p>
+ *         
+ *         <p>
+ *         dns:///wikipedia This endpoint takes one paramter :
+ *         <ul>
+ *         <li>term: the search term on wikipedia</li>
+ *         </ul>
+ * 
+ *         </p>
  * 
  */
 public class DNSComponent extends DefaultComponent {
@@ -69,6 +77,8 @@ public class DNSComponent extends DefaultComponent {
     private static final String OPERATION_LOOKUP = "lookup";
 
     private static final String OPERATION_DIG = "dig";
+    
+    private static final String OPERATION_WIKIPEDIA = "wikipedia";
 
     protected Endpoint createEndpoint(String uri, String remaining,
             Map<String, Object> parameters) throws Exception {
@@ -78,7 +88,9 @@ public class DNSComponent extends DefaultComponent {
             return new DNSLookupEndpoint(getCamelContext());
         } else if (OPERATION_DIG.equals(remaining)) {
             return new DNSDigEndpoint(getCamelContext());
-        } else {
+        } else if (OPERATION_WIKIPEDIA.equals(remaining)) {
+            return new WikipediaEndpoint(getCamelContext());
+        }else {
             throw new IllegalArgumentException(uri
                     + "is unsupported by the DNS component");
         }

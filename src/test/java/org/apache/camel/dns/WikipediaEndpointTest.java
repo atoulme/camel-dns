@@ -31,26 +31,24 @@ import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.xbill.DNS.Message;
-import org.xbill.DNS.Section;
 
 /**
  * @author Antoine Toulme
  * 
- *         Tests for the dig endpoint.
- * 
+ * A test case to check wikipedia records.
+ *
  */
-public class DNSDigEndpointTest extends CamelSpringTestSupport {
+public class WikipediaEndpointTest extends CamelSpringTestSupport {
 
     private static final String RESPONSE_MONKEY = "\"A monkey is a nonhuman " +
-    		"primate mammal with the exception usually of the lemurs and " +
-    		"tarsiers. More specifically, the term monkey refers to a subset " +
-    		"of monkeys: any of the smaller longer-tailed catarrhine or " +
-    		"platyrrhine primates as contrasted with the apes.\" " +
-    		"\" http://en.wikipedia.org/wiki/Monkey\"";
+            "primate mammal with the exception usually of the lemurs and " +
+            "tarsiers. More specifically, the term monkey refers to a subset " +
+            "of monkeys: any of the smaller longer-tailed catarrhine or " +
+            "platyrrhine primates as contrasted with the apes.\" " +
+            "\" http://en.wikipedia.org/wiki/Monkey\"";
     
     protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("DNSDig.xml");
+        return new ClassPathXmlApplicationContext("Wikipedia.xml");
     }
 
     @EndpointInject(uri = "mock:result")
@@ -60,18 +58,16 @@ public class DNSDigEndpointTest extends CamelSpringTestSupport {
     protected ProducerTemplate _template;
 
     @Test
-    public void testDigForMonkey() throws Exception {
+    public void testWikipediaForMonkey() throws Exception {
         _resultEndpoint.expectedMessageCount(1);
         _resultEndpoint.expectedMessagesMatches(new Predicate() {
             public boolean matches(Exchange exchange) {
-                String str = ((Message) exchange.getIn().getBody()).
-                    getSectionArray(Section.ANSWER)[0].rdataToString();
+                String str = (String) exchange.getIn().getBody();
                 return RESPONSE_MONKEY.equals(str);
             }
         });
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put("dns.name", "monkey.wp.dg.cx");
-        headers.put("dns.type", "TXT");
+        headers.put("term", "monkey");
         _template.sendBodyAndHeaders(null, headers);
         _resultEndpoint.assertIsSatisfied();
     }

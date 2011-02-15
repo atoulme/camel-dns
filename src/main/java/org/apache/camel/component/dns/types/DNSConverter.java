@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.camel.dns.types;
+package org.apache.camel.component.dns.types;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

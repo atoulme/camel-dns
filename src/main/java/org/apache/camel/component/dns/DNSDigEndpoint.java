@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.camel.dns;
+package org.apache.camel.component.dns;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Consumer;
@@ -59,8 +59,12 @@ public class DNSDigEndpoint extends DefaultEndpoint {
         return new DefaultProducer(this) {
 
             public void process(Exchange exchange) throws Exception {
-                SimpleResolver resolver = new SimpleResolver(
-                        String.valueOf(exchange.getIn().getHeader(DNS_SERVER)));
+                String server = null;
+                if (exchange.getIn().getHeader(DNS_SERVER) != null) {
+                    server = String.valueOf(exchange.getIn().
+                            getHeader(DNS_SERVER));
+                }
+                SimpleResolver resolver = new SimpleResolver(server);
                 int type = Type.value(String.valueOf(exchange.getIn()
                         .getHeader(DNS_TYPE)));
                 if (type == -1) {

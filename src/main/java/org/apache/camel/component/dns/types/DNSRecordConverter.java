@@ -19,7 +19,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.camel.dns.types;
+package org.apache.camel.component.dns.types;
 
 import java.io.IOException;
 import org.xbill.DNS.DClass;

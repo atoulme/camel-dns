@@ -10,10 +10,10 @@
         <camel-version>2.6.0</camel-version>
         <camel.osgi.version>version=${project.version}</camel.osgi.version>
         <camel.osgi.export.pkg>
-            org.apache.camel.*
+            org.apache.camel.component.dns*
         </camel.osgi.export.pkg>
         <camel.osgi.import.pkg>
-            !org.apache.camel.*,
+            !org.apache.component.camel.*,
             !javax.xml.*,
             !org.w3c.dom,
             *

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.camel.dns;
+package org.apache.camel.component.dns;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,24 +31,26 @@ import org.apache.camel.test.junit4.CamelSpringTestSupport;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Section;
 
 /**
  * @author Antoine Toulme
  * 
- * A test case to check wikipedia records.
- *
+ *         Tests for the dig endpoint.
+ * 
  */
-public class WikipediaEndpointTest extends CamelSpringTestSupport {
+public class DNSDigEndpointTest extends CamelSpringTestSupport {
 
     private static final String RESPONSE_MONKEY = "\"A monkey is a nonhuman " +
-            "primate mammal with the exception usually of the lemurs and " +
-            "tarsiers. More specifically, the term monkey refers to a subset " +
-            "of monkeys: any of the smaller longer-tailed catarrhine or " +
-            "platyrrhine primates as contrasted with the apes.\" " +
-            "\" http://en.wikipedia.org/wiki/Monkey\"";
+    		"primate mammal with the exception usually of the lemurs and " +
+    		"tarsiers. More specifically, the term monkey refers to a subset " +
+    		"of monkeys: any of the smaller longer-tailed catarrhine or " +
+    		"platyrrhine primates as contrasted with the apes.\" " +
+    		"\" http://en.wikipedia.org/wiki/Monkey\"";
     
     protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("Wikipedia.xml");
+        return new ClassPathXmlApplicationContext("DNSDig.xml");
     }
 
     @EndpointInject(uri = "mock:result")
@@ -58,16 +60,18 @@ public class WikipediaEndpointTest extends CamelSpringTestSupport {
     protected ProducerTemplate _template;
 
     @Test
-    public void testWikipediaForMonkey() throws Exception {
+    public void testDigForMonkey() throws Exception {
         _resultEndpoint.expectedMessageCount(1);
         _resultEndpoint.expectedMessagesMatches(new Predicate() {
             public boolean matches(Exchange exchange) {
-                String str = (String) exchange.getIn().getBody();
+                String str = ((Message) exchange.getIn().getBody()).
+                    getSectionArray(Section.ANSWER)[0].rdataToString();
                 return RESPONSE_MONKEY.equals(str);
             }
         });
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put("term", "monkey");
+        headers.put("dns.name", "monkey.wp.dg.cx");
+        headers.put("dns.type", "TXT");
         _template.sendBodyAndHeaders(null, headers);
         _resultEndpoint.assertIsSatisfied();
     }

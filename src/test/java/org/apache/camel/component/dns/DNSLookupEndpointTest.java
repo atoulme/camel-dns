@@ -57,7 +57,7 @@ public class DNSLookupEndpointTest extends CamelSpringTestSupport {
         try {
             _template.sendBody("hello");
         } catch (Throwable t) {
-            assert (t.getCause() instanceof IllegalArgumentException);
+            assertTrue(t.getCause() instanceof IllegalArgumentException);
         }
         _resultEndpoint.assertIsSatisfied();
     }
@@ -68,7 +68,8 @@ public class DNSLookupEndpointTest extends CamelSpringTestSupport {
         try {
             _template.sendBodyAndHeader("hello", "dns.name", "");
         } catch (Throwable t) {
-            assert (t.getCause() instanceof IllegalArgumentException);
+            t.printStackTrace();
+            assertTrue(t.toString(), t.getCause() instanceof IllegalArgumentException);
         }
         _resultEndpoint.assertIsSatisfied();
     }

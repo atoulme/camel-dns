@@ -54,8 +54,8 @@ public class DNSLookupEndpoint extends DefaultEndpoint {
 
             public void process(Exchange exchange) throws Exception {
                 Object name = exchange.getIn().getHeader(DNS_NAME);
-                if (name == null) {
-                    throw new IllegalArgumentException("name is null");
+                if (name == null || "".equals(name)) {
+                    throw new IllegalArgumentException("name is null or empty");
                 }
                 String dns_name = String.valueOf(name);
                 Object type = exchange.getIn().getHeader(DNS_TYPE);

@@ -1,5 +1,9 @@
 =Camel-DNS
 
+IMPORTANT: This code was merged with Camel Trunk and will be part of Camel 2.8 release.
+Please see https://issues.apache.org/jira/browse/CAMEL-3667 for history.
+This code will not be maintained here anymore.
+
 This is an additional component for Camel to run DNS queries, using DNSJava.
 
 The component should be a thin layer on top of DNSJava.
